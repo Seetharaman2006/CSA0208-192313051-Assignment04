@@ -1,0 +1,27 @@
+#include <stdio.h>
+
+/* Mocking a slow verification function */
+int slow_verify(int id) {
+    printf("Server check called for ID: %d\n", id);
+    return 1; 
+}
+
+int main() {
+    int is_senior = 1;
+    int eligible_class = 0;
+    int id = 101;
+    
+    /* 
+     * Because 'eligible_class' is 0, (is_senior && eligible_class) evaluates to false.
+     * The || operator then forces the evaluation of the right side, calling slow_verify.
+     * To optimize, place the cheapest/most-likely-false condition first for &&, 
+     * and cheapest/most-likely-true first for ||.
+     */
+    if ((is_senior && eligible_class) || slow_verify(id)) {
+        printf("Concession granted.\n");
+    } else {
+        printf("No concession.\n");
+    }
+    
+    return 0;
+}
